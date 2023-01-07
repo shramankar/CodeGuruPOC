@@ -1,0 +1,18 @@
+modules:
+  jira:projectPage:
+    - key: codeguruai-hello-world-project-page
+      function: main
+      title: CodeGuruAI
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/07669505-cc13-418d-8e9c-78ede22893d6
+permissions:
+  scopes:
+    - read:jira-work
+    - read:issue-details:jira
+    - read:audit-log:jira
+    - read:avatar:jira
+    - read:field-configuration:jira
+    - read:issue-meta:jira
