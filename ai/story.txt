@@ -1,0 +1,9 @@
+As a super/local admin when I click management Import stock menu that allows me show all functionalities over Import stock.
+
+Acceptance Criteria:
+
+·       Ability to access the functionalities displayed on super/Local admin management Import stock menu
+
+·       Ability to click all functionalities on import stock menu with following.
+
+o   Stock file

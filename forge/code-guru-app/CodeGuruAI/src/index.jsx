@@ -12,12 +12,23 @@ import ForgeUI, { render,
                  Cell, 
                  Row} from '@forge/ui';
 import api, {route} from '@forge/api'
+const { spawn } = require('child_process');
+
 const App = () => {
     const [formState, setFormState] = useState(undefined);
     var [stories, setStories] = useState(undefined);
 
-    const fetchNumberOfIssues = async () => {
-        const response = await api.asUser().requestJira(route`/rest/api/3/search`);
+    const fetchNumberOfIssues = async (projectKey) => {
+        var response = undefined
+        if (projectKey === undefined) {
+           response = await api.asUser().requestJira(route`/rest/api/3/search`);
+        }
+        else {
+          const jql = `project in (${projectKey})`; 
+          response = await api
+                           .asUser()
+                           .requestJira(route`/rest/api/3/search?jql=${jql}`);
+        }
         const data = await response.json();
         return data.total;
     };
@@ -30,10 +41,25 @@ const App = () => {
         const data = await res.json()
         const numIssues = data.total
         for (let i = 0; i < numIssues; i++) {
-            formattedArray.push({
-                issueID: data.issues[i].key, 
-                description: data.issues[i].fields.summary 
-            })
+            if (data.issues[i] != undefined) {
+              var desc = ""
+              const paragraph = data.issues[i].fields.description.content
+              console.log("the length is" + paragraph.length)
+              for (let j = 0; j < paragraph.length; j++) {
+                const local_content = paragraph[j].content
+                local_content.forEach((content) => {
+                  console.log(content)
+                  desc += content.text
+                });
+                desc += "\n"
+              }
+                formattedArray.push({
+                  issueID: data.issues[i].key, 
+                  title: data.issues[i].fields.summary, 
+                  description: desc, 
+                  done: "Not Complete"
+              })
+          }
         }
         setStories(formattedArray)
     }  
@@ -83,6 +109,18 @@ const App = () => {
                 await fetchStories(key)
             }
     }, [formState])
+    useEffect(async () => {
+      if (formState != undefined) {
+        const key = await getProjectKey(formState.projects)
+        const numStories = fetchNumberOfIssues(key)
+        stories.forEach((story, index) => {
+          const code_generation_process = spawn('python', ['../../../../ai/model.py', story.title, story.description]);
+          code_generation_process.stdout.on('data', function(data, error) {
+            console.log(data)
+          }); 
+        })
+      }
+    }, [stories])
     return (
         <Fragment>
             <Form onSubmit={onSubmit}>
@@ -104,7 +142,10 @@ const App = () => {
                   <Text>ID</Text>
                 </Cell>
                 <Cell>
-                  <Text>Description</Text>
+                  <Text>Title</Text>
+                </Cell>
+                <Cell> 
+                  <Text>Done</Text> 
                 </Cell>
               </Head>
               {stories.map((story) => (
@@ -113,7 +154,10 @@ const App = () => {
                     <Text>{story.issueID}</Text>
                   </Cell>
                   <Cell>
-                    <Text>{story.description}</Text>
+                    <Text>{story.title}</Text>
+                  </Cell>
+                  <Cell>
+                    <Text>{story.done}</Text>
                   </Cell>
                 </Row>
               ))}
