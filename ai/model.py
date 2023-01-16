@@ -17,7 +17,5 @@ response = openai.Completion.create(
     frequency_penalty=0,
     presence_penalty=0
 )
-a = response
 
-
-print(a.choices[-1].text)
+print(response.choices[-1].text)

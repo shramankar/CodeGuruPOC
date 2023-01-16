@@ -1,9 +1,21 @@
-As a super/local admin when I click management Import stock menu that allows me show all functionalities over Import stock.
+As a Super/Local admin with an active account, I want to reset my password in case I forgot it.
 
 Acceptance Criteria:
 
-·       Ability to access the functionalities displayed on super/Local admin management Import stock menu
+The user must be able to initiate the password reset process by entering their email address or username.
 
-·       Ability to click all functionalities on import stock menu with following.
+The system must send a password reset link or code to the user's email or mobile number.
 
-o   Stock file
+The user must be able to reset their password by clicking on the link or entering the code and creating a new password.
+
+The user must be able to reset their password using a valid and secure password.
+
+The system must notify the user of the successful password reset.
+
+The system must store the new password securely and encrypt it.
+
+The system should have the capability of logging and tracking the password reset request and actions.
+
+The system must have a clear and easy-to-use interface for users to navigate.
+
+The system should have the capability of handling and notifying the user in case of any suspicious or unauthorized reset attempts
