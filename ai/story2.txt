@@ -1,6 +1,6 @@
 Description
 
-As a super admin, I want to ‘login’ to application by entering the super admin account number and password successfully so that I can access the functionalities displayed on super admin landing page.
+As a Local admin, I want to ‘login’ to application by entering the local admin account number and password successfully so that I can access the functionalities displayed on local admin landing page.
 
 Acceptance Criteria:
 
@@ -8,7 +8,9 @@ Acceptance Criteria:
 
 ·       Ability to see name, profiles pic, last sing in details
 
-·       Ability to access super admin landing  page and welcome screen with the following
+·       Ability to allow limited feature/function access over local admin landing screen
+
+·       Ability to access local admin landing  page and welcome screen with the following
 
 o   Dashboard (quick links)
 
@@ -91,9 +93,3 @@ o   Profile (Profile links)
 §  My profile
 
 §  Change password
-
-·       The user can create and delete other users within the system.
-
-·       The user can assign and revoke different levels of access and permissions for other users.
-
-·       The user can access and manage all data within the system, regardless of other users' permissions.

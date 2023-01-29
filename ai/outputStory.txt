@@ -1,0 +1,80 @@
+
+
+Solution
+
+@Controller
+public class SuperAdminController {
+ 
+    @RequestMapping(value="/superadmin/login", method=RequestMethod.POST)
+    public String login(@RequestParam("accountNumber") String accountNumber,
+                        @RequestParam("password") String password){
+        if(isValidAccountNumberAndPassword(accountNumber, password)){
+            return "superadmin/landing-page";
+        }
+        return "superadmin/login-error";
+    }
+ 
+    @RequestMapping(value="/superadmin/dashboard", method=RequestMethod.GET)
+    public String dashboard(){
+        return "superadmin/dashboard";
+    }
+ 
+    @RequestMapping(value="/superadmin/management", method=RequestMethod.GET)
+    public String management(){
+        return "superadmin/management";
+    }
+ 
+    @RequestMapping(value="/superadmin/setup", method=RequestMethod.GET)
+    public String setup(){
+        return "superadmin/setup";
+    }
+ 
+    @RequestMapping(value="/superadmin/profile", method=RequestMethod.GET)
+    public String profile(){
+        return "superadmin/profile";
+    }
+ 
+    @RequestMapping(value="/superadmin/logout", method=RequestMethod.GET)
+    public String logout(){
+        return "superadmin/logout";
+    }
+ 
+    @RequestMapping(value="/superadmin/create-user", method=RequestMethod.POST)
+    public String createUser(@RequestParam("username") String username,
+                        @RequestParam("password") String password){
+        if(createUser(username, password)){
+            return "superadmin/user-created";
+        }
+        return "superadmin/create-user-error";
+    }
+ 
+    @RequestMapping(value="/superadmin/delete-user", method=RequestMethod.POST)
+    public String deleteUser(@RequestParam("username") String username){
+        if(deleteUser(username)){
+            return "superadmin/user-deleted";
+        }
+        return "superadmin/delete-user-error";
+    }
+ 
+    @RequestMapping(value="/superadmin/assign-access", method=RequestMethod.POST)
+    public String assignAccess(@RequestParam("username") String username,
+                        @RequestParam("access") String access){
+        if(assignAccess(username, access)){
+            return "superadmin/access-assigned";
+        }
+        return "superadmin/assign-access-error";
+    }
+ 
+    @RequestMapping(value="/superadmin/revoke-access", method=RequestMethod.POST)
+    public String revokeAccess(@RequestParam("username") String username){
+        if(revokeAccess(username)){
+            return "superadmin/access-revoked";
+        }
+        return "superadmin/revoke-access-error";
+    }
+ 
+    @RequestMapping(value="/superadmin/manage-data", method=RequestMethod.GET)
+    public String manageData(){
+        return "superadmin/manage-data";
+    }
+}

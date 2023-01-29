@@ -1,0 +1,98 @@
+
+
+§  Edit profile
+
+§  Logout
+
+Solution:
+
+// Login controller
+@Controller
+public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping(value="/login", method=RequestMethod.POST)
+    public String login(@RequestParam("localAdminAccountNumber") String localAdminAccountNumber,
+                        @RequestParam("password") String password,
+                        ModelMap modelMap){
+
+        // Validate local admin account number and password
+        User user = userService.validateLocalAdminLogin(localAdminAccountNumber, password);
+        if (user == null) {
+            modelMap.addAttribute("error", "Invalid local admin account number or password!");
+            return "login";
+        }
+
+        // Login successfully, redirect to local admin landing page
+        modelMap.addAttribute("user", user);
+        return "localAdminLandingPage";
+    }
+
+}
+
+// Local Admin landing page
+@Controller
+public class LocalAdminLandingPageController {
+
+    @RequestMapping(value="/localAdminLandingPage")
+    public String showLocalAdminLandingPage(ModelMap modelMap){
+
+        // Get the user info
+        User user = (User) modelMap.get("user");
+        modelMap.addAttribute("name", user.getName());
+        modelMap.addAttribute("profilePic", user.getProfilePic());
+        modelMap.addAttribute("lastLoginTime", user.getLastLoginTime());
+
+        // Add the functionalities
+        List<String> dashboardLinks = new ArrayList<>();
+        dashboardLinks.add("Add product");
+        dashboardLinks.add("Products");
+        dashboardLinks.add("Manage Stocks");
+        dashboardLinks.add("Specials Offers");
+        dashboardLinks.add("Orders");
+        dashboardLinks.add("New order");
+        dashboardLinks.add("Import Stock");
+        dashboardLinks.add("Add buyer");
+        dashboardLinks.add("Viewer");
+        modelMap.addAttribute("dashboardLinks", dashboardLinks);
+
+        List<String> managementLinks = new ArrayList<>();
+        managementLinks.add("Product");
+        managementLinks.add("Specials Offers");
+        managementLinks.add("Manage Stock");
+        managementLinks.add("Orders");
+        managementLinks.add("New order");
+        managementLinks.add("viewers");
+        managementLinks.add("Return Claim");
+        managementLinks.add("Import stock");
+        managementLinks.add("Export History");
+        modelMap.addAttribute("managementLinks", managementLinks);
+
+        List<String> setupLinks = new ArrayList<>();
+        setupLinks.add("Administrator");
+        setupLinks.add("Buyer");
+        setupLinks.add("Group Buyers");
+        setupLinks.add("Retailers");
+        setupLinks.add("Block/Unlock titles");
+        setupLinks.add("Product categories");
+        setupLinks.add("Documents");
+        setupLinks.add("Slides");
+        setupLinks.add("So event calendar");
+        setupLinks.add("Assign privileges");
+        setupLinks.add("Site configuration");
+        modelMap.addAttribute("setupLinks", setupLinks);
+
+        List<String> profileLinks = new ArrayList<>();
+        profileLinks.add("My profile");
+        profileLinks.add("Change password");
+        profileLinks.add("Edit profile");
+        profileLinks.add("Logout");
+        modelMap.addAttribute("profileLinks", profileLinks);
+
+        // Return the view
+        return "localAdminLandingPage";
+    }
+
+}

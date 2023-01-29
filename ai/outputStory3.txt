@@ -1,0 +1,43 @@
+.
+
+Solution:
+
+@Controller
+public class PasswordResetController {
+
+@Autowired
+private UserService userService;
+
+// Method to handle the user's request to reset their password
+@RequestMapping(value="/reset-password", method= RequestMethod.POST)
+public String resetPassword(@RequestParam String email){
+   // Logic for validating the user and sending a reset password link via email
+   userService.sendPasswordResetLink(email); 
+   return "success";
+}
+
+// Method to handle the user's reset password request
+@RequestMapping(value="/reset-password", method= RequestMethod.GET)
+public String enterNewPassword(@RequestParam String resetToken){
+   // Logic for validating the reset token and allowing the user to enter the new password
+   userService.verifyPasswordResetToken(resetToken); 
+   return "enterNewPassword";
+}
+
+// Method to handle the user's password reset
+@RequestMapping(value="/reset-password", method= RequestMethod.PUT)
+public String resetPassword(@RequestParam String newPassword, @RequestParam String resetToken){
+   // Logic for validating the reset token and resetting the user password
+   userService.resetPassword(newPassword, resetToken); 
+   return "passwordResetSuccess";
+}
+
+// Method to handle the user's unsuccessful password reset attempts
+@RequestMapping(value="/reset-password", method= RequestMethod.DELETE)
+public String unauthorizedResetAttempt(@RequestParam String resetToken){
+   // Logic for logging the unauthorized reset attempt and notifying the user
+   userService.logUnauthorizedResetAttempt(resetToken); 
+   return "unauthorizedResetAttempt";
+}
+
+}
